@@ -42,7 +42,7 @@ const Main = () => {
             <div className="books-list">
                 {books?.length 
                     ? <Grid container spacing={2}>
-                        {books && books.map((book: any, key) =>
+                        {books && books.map((book:BookType, key) =>
                             <Grid item md={4} key={key}>
                                 <Card>
                                     <CardMedia
