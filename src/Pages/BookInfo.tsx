@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { BookType } from "../store/types";
 
 const BookInfo = () => {
-    const [ book, setBook ] = useState<BookType>();
+    const [ book, setBook ] = useState<BookType>({} as BookType);
     const {id} = useParams();
     
     useEffect(() => {
@@ -18,7 +18,7 @@ const BookInfo = () => {
     
     return(
         <>
-            {book?.volumeInfo
+            {book.volumeInfo
                 ? <Card>
                     <CardMedia
                         component="img"

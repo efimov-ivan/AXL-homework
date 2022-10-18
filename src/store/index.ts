@@ -1,7 +1,7 @@
 import {observable, makeObservable} from "mobx";
 
 class Store{
-    text: string = '';
+    text: string = 'React';
     category: string = '';
     page: number = 1;
   
@@ -14,7 +14,7 @@ class Store{
     }
   
     searchByText(text: string){
-      this.text = text;
+      this.text = text ? text : 'React';
       this.page = 1;
     }
     

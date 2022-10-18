@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {observer} from "mobx-react";
 import {Grid, CircularProgress, Card, CardActions, CardContent, CardMedia, Button, Typography, Pagination, Stack} from '@mui/material';
 import {store} from '../store/index';
@@ -10,16 +10,16 @@ import { BookType, BooksListType } from "../store/types";
 const Main = () => {
 
     const { text, category, page } = store;
-    const [books, setBooks] = useState<BookType[]>();
+    const [books, setBooks] = useState<BookType[]>([]);
     const [countBooks, setCountBooks] = useState<number>(0);
 
     useEffect(() => {
         const fetchData = async () => {
-            let startIndex = page * 6 - 5;
-            const data = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${text ? text : 'React'}${category && `+incategories:${category}`}&maxResults=6&startIndex=${startIndex}`);
-            const result: BooksListType = await data.json();            
+            const startIndex = page * 6 - 6;
+            const data = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(text)}${category && `+incategories:${category}`}&maxResults=6&startIndex=${startIndex}`);
+            const result: BooksListType = await data.json();        
             setCountBooks(result.totalItems);
-            setBooks(result.items); 
+            setBooks(result.items);
         }
         fetchData();
     }, [text, category, page]);
@@ -40,7 +40,7 @@ const Main = () => {
             </Grid>
 
             <div className="books-list">
-                {books?.length 
+                {books.length 
                     ? <Grid container spacing={2}>
                         {books && books.map((book:BookType, key) =>
                             <Grid item md={4} key={key}>
@@ -72,7 +72,7 @@ const Main = () => {
 
              <Stack spacing={2} alignItems="center">
                 <Pagination 
-                    count={Math.floor(countBooks / 9)} 
+                    count={Math.floor(countBooks / 6)} 
                     page={page} 
                     onChange={changePagination} 
                     variant="outlined"
